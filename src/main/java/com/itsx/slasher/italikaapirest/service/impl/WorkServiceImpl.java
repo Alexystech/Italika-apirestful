@@ -1,0 +1,58 @@
+package com.itsx.slasher.italikaapirest.service.impl;
+
+import com.itsx.slasher.italikaapirest.entity.Work;
+import com.itsx.slasher.italikaapirest.repository.WorkRepository;
+import com.itsx.slasher.italikaapirest.service.WorkService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class WorkServiceImpl implements WorkService {
+
+    private WorkRepository workRepository;
+
+    @Autowired
+    public WorkServiceImpl(WorkRepository workRepository) {
+        this.workRepository = workRepository;
+    }
+
+    @Override
+    public boolean createWork(Work work) {
+        if ( work != null) {
+            workRepository.save(work);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean removeWorkByFolio(long folio) {
+        if ( folio > 0 ) {
+            workRepository.deleteById(folio);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean updateWork(Work work) {
+        if ( work != null ) {
+            workRepository.save(work);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public Work getWorkByFolio(long folio) {
+        return workRepository.findById(folio).get();
+    }
+
+    @Override
+    public List<Work> getAllWorks() {
+        List<Work> works = (List<Work>) workRepository.findAll();
+        return works;
+    }
+}
