@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.itsx.slasher</groupId>
     <artifactId>italika-apirest</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.1</version>
     <name>italika-apirest</name>
     <description>Demo project for Spring Boot</description>
     <properties>

@@ -2,10 +2,10 @@ spring:
   application:
     name: italika-apirest
   datasource:
-    username: postgres
-    password: 1408
+    username: fdvgkprgqjuvgs
+    password: b2731db2b76c8bf6317a38521a14128ba0780ab82abd8a4b078d1d11a758f7a4
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/italika_database
+    url: postgres://fdvgkprgqjuvgs:b2731db2b76c8bf6317a38521a14128ba0780ab82abd8a4b078d1d11a758f7a4@ec2-54-160-96-70.compute-1.amazonaws.com:5432/dekaq1ilkvbl09
   jpa:
     hibernate:
       ddl-auto: update
