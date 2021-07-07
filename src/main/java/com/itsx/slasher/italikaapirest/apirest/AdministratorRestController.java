@@ -2,7 +2,11 @@ package com.itsx.slasher.italikaapirest.apirest;
 
 import com.itsx.slasher.italikaapirest.entity.Administrator;
 import com.itsx.slasher.italikaapirest.service.AdministratorService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,29 +30,34 @@ public class AdministratorRestController {
         this.administratorService = administratorService;
     }
 
-    /**
-     * The creation of an administrator
-     * @param administrator
-     * @return
-     */
+    @ApiOperation("The creation of an administrator")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 405, message = "No content")
+    })
     @PostMapping("/create/administrator")
     public ResponseEntity<Administrator> createAdministrator(@RequestBody Administrator administrator) {
+
+        if ( administrator == null ) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+
         administratorService.createAdministrator(administrator);
         return ResponseEntity.ok(administrator);
     }
 
-    /**
-     * End point to remove an administrator to data base
-     * @param folio
-     * @return
-     */
+    @ApiOperation("End point to remove an administrator to data base")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 404, message = "Administrator not found")
+    })
     @DeleteMapping("/delete/administrator/{folio}")
     public ResponseEntity<Boolean> deleteAdministratorByFolio(@PathVariable Long folio) {
 
         Administrator administrator = administratorService.getAdministratorByFolio(folio);
 
         if ( administrator == null ) {
-            throw new RuntimeException("Administrator doesn't exist - " + folio);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
         administratorService.removeAdministratorByFolio(folio);
@@ -56,37 +65,39 @@ public class AdministratorRestController {
         return ResponseEntity.ok(true);
     }
 
-    /**
-     * To update administrator
-     * @param administrator
-     * @return
-     */
+    @ApiOperation("To update administrator")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 404, message = "No content")
+    })
     @PutMapping("/update/administrator")
     public ResponseEntity<Administrator> updateAdministrator(@RequestBody Administrator administrator) {
+
+        if ( administrator == null ) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+
         administratorService.updateAdministrator(administrator);
         return ResponseEntity.ok(administrator);
     }
 
-    /**
-     * To get an administrator
-     * @param folio
-     * @return
-     */
+    @ApiOperation("To get an administrator")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 404, message = "Administrator not found")
+    })
     @GetMapping("/get/administrator/{folio}")
     public ResponseEntity<Administrator> getAdministratorById(@PathVariable Long folio) {
         Administrator administrator = administratorService.getAdministratorByFolio(folio);
 
         if ( administrator == null ) {
-            throw new RuntimeException("Administrator doesn't exist - " + folio);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
         return ResponseEntity.ok(administrator);
     }
 
-    /**
-     * To get all administrators
-     * @return
-     */
+    @ApiOperation("To get all administrators")
     @GetMapping("/get/all/administrators")
     public ResponseEntity<List<Administrator>> getAlAdministrators() {
         return ResponseEntity.ok(administratorService.getAllAdministrators());

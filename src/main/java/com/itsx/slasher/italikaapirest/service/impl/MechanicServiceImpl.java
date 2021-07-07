@@ -29,7 +29,7 @@ public class MechanicServiceImpl implements MechanicService {
 
     @Override
     public boolean removeMechanicByFolio(long folio) {
-        if ( folio > 0 ) {
+        if ( getMechanicByFolio(folio) != null ) {
             mechanicRepository.deleteById(folio);
             return true;
         }
@@ -47,12 +47,11 @@ public class MechanicServiceImpl implements MechanicService {
 
     @Override
     public Mechanic getMechanicByFolio(long folio) {
-        return mechanicRepository.findById(folio).get();
+        return mechanicRepository.findById(folio).orElse(null);
     }
 
     @Override
     public List<Mechanic> getAllMechanics() {
-        List<Mechanic> mechanics = (List<Mechanic>) mechanicRepository.findAll();
-        return mechanics;
+        return ((List<Mechanic>) mechanicRepository.findAll());
     }
 }

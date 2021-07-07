@@ -29,7 +29,7 @@ public class AdministratorServiceImpl implements AdministratorService {
 
     @Override
     public boolean removeAdministratorByFolio(long folio) {
-        if ( folio > 0 ) {
+        if ( getAdministratorByFolio(folio) != null ) {
             administratorRepository.deleteById(folio);
             return true;
         }
@@ -47,12 +47,11 @@ public class AdministratorServiceImpl implements AdministratorService {
 
     @Override
     public Administrator getAdministratorByFolio(long folio) {
-        return administratorRepository.findById(folio).get();
+        return administratorRepository.findById(folio).orElse(null);
     }
 
     @Override
     public List<Administrator> getAllAdministrators() {
-        List<Administrator> administrators = (List<Administrator>) administratorRepository.findAll();
-        return administrators;
+        return ((List<Administrator>) administratorRepository.findAll());
     }
 }

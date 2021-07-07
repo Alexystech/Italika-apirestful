@@ -2,7 +2,11 @@ package com.itsx.slasher.italikaapirest.apirest;
 
 import com.itsx.slasher.italikaapirest.entity.Vehicle;
 import com.itsx.slasher.italikaapirest.service.VehicleService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,16 +30,16 @@ public class VehicleRestController {
         this.vehicleService = vehicleService;
     }
 
-    /**
-     * create a vehicle
-     * @param vehicle
-     * @return
-     */
+    @ApiOperation("create a vehicle")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 404, message = "No content")
+    })
     @PostMapping("/create/vehicle")
     public ResponseEntity<Vehicle> createVehicle(@RequestBody Vehicle vehicle) {
 
         if ( vehicle == null ) {
-            throw new RuntimeException("vehicle is null");
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
 
         vehicleService.createVehicle(vehicle);
@@ -43,18 +47,18 @@ public class VehicleRestController {
         return ResponseEntity.ok(vehicle);
     }
 
-    /**
-     * remove a vehicle by plaque
-     * @param plaque
-     * @return
-     */
+    @ApiOperation("remove a vehicle by plaque")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 404, message = "Vehicle not found")
+    })
     @DeleteMapping("/delete/vehicle/{plaque}")
     public ResponseEntity<Boolean> deleteVehicleByFolio(@PathVariable String plaque) {
 
         Vehicle vehicle = vehicleService.getVehicleByPlaque(plaque);
 
         if ( vehicle == null ) {
-            throw new RuntimeException("vehicle don't exist - " + plaque);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
         vehicleService.removeVehicleByPlaque(plaque);
@@ -62,16 +66,16 @@ public class VehicleRestController {
         return ResponseEntity.ok(true);
     }
 
-    /**
-     * update a vehicle
-     * @param vehicle
-     * @return
-     */
+    @ApiOperation("update a vehicle")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 404, message = "No content")
+    })
     @PutMapping("/update/vehicle")
     public ResponseEntity<Vehicle> updateVehicle(@RequestBody Vehicle vehicle) {
 
         if ( vehicle == null ) {
-            throw new RuntimeException("vehicle is null");
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
 
         vehicleService.updateVehicle(vehicle);
@@ -79,27 +83,24 @@ public class VehicleRestController {
         return ResponseEntity.ok(vehicle);
     }
 
-    /**
-     * get a vehicle by plaque
-     * @param plaque
-     * @return
-     */
+    @ApiOperation("get a vehicle by plaque")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 404, message = "Vehicle not found")
+    })
     @GetMapping("/get/vehicle/{plaque}")
     public ResponseEntity<Vehicle> getVehicleByPlaque(@PathVariable String plaque) {
 
         Vehicle vehicle = vehicleService.getVehicleByPlaque(plaque);
 
         if ( vehicle == null ) {
-            throw new RuntimeException("vehicle don't exist");
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
         return ResponseEntity.ok(vehicle);
     }
 
-    /**
-     * get all vehicles
-     * @return
-     */
+    @ApiOperation("get all vehicles")
     @GetMapping("/get/all/vehicles")
     public ResponseEntity<List<Vehicle>> getAllVehicles() {
         List<Vehicle> vehicles = vehicleService.getAllVehicles();

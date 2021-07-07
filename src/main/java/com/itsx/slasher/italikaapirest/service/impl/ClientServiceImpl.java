@@ -29,7 +29,7 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public boolean removeClientByFolio(long folio) {
-        if ( folio > 0 ) {
+        if ( getClientByFolio(folio) != null ) {
             clientRepository.deleteById(folio);
             return true;
         }
@@ -47,12 +47,11 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public Client getClientByFolio(long folio) {
-        return clientRepository.findById(folio).get();
+        return clientRepository.findById(folio).orElse(null);
     }
 
     @Override
     public List<Client> getAllClients() {
-        List<Client> clients = (List<Client>) clientRepository.findAll();
-        return clients;
+        return ((List<Client>) clientRepository.findAll());
     }
 }

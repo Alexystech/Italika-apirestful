@@ -2,7 +2,11 @@ package com.itsx.slasher.italikaapirest.apirest;
 
 import com.itsx.slasher.italikaapirest.entity.Mechanic;
 import com.itsx.slasher.italikaapirest.service.MechanicService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,13 +30,10 @@ public class MechanicRestController {
         this.mechanicService = mechanicService;
     }
 
-    /**
-     * create a mechanic
-     * @param mechanic
-     * @return
-     */
+    @ApiOperation("create a mechanic")
     @PostMapping("/create/mechanic")
     public ResponseEntity<Mechanic> createMechanic(@RequestBody Mechanic mechanic) {
+
         if ( mechanic == null ) {
             throw new RuntimeException("this mechanic is null");
         }
@@ -42,18 +43,18 @@ public class MechanicRestController {
         return ResponseEntity.ok(mechanic);
     }
 
-    /**
-     * delete a mechanic by folio
-     * @param folio
-     * @return
-     */
+    @ApiOperation("delete a mechanic by folio")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 404, message = "Mechanic not found")
+    })
     @DeleteMapping("/delete/mechanic/{folio}")
     public ResponseEntity<Boolean> deleteMechanicByFolio(@PathVariable Long folio) {
 
         Mechanic mechanic = mechanicService.getMechanicByFolio(folio);
 
         if ( mechanic == null ) {
-            throw new RuntimeException("mechanic doesn't exist - " + folio);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
         mechanicService.removeMechanicByFolio(folio);
@@ -61,16 +62,16 @@ public class MechanicRestController {
         return ResponseEntity.ok(true);
     }
 
-    /**
-     * update a mechanic
-     * @param mechanic
-     * @return
-     */
+    @ApiOperation("update a mechanic")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 404, message = "No content")
+    })
     @PutMapping("/update/mechanic")
     public ResponseEntity<Mechanic> updateMechanic(@RequestBody Mechanic mechanic) {
 
         if ( mechanic == null ) {
-            throw new RuntimeException("mechanic is null");
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
 
         mechanicService.updateMechanic(mechanic);
@@ -78,26 +79,23 @@ public class MechanicRestController {
         return ResponseEntity.ok(mechanic);
     }
 
-    /**
-     * Get a mechanic by folio
-     * @param folio
-     * @return
-     */
+    @ApiOperation("Get a mechanic by folio")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 404, message = "Mechanic not found")
+    })
     @GetMapping("/get/mechanic/{folio}")
     public ResponseEntity<Mechanic> getMechanicByFolio(@PathVariable Long folio) {
         Mechanic mechanic = mechanicService.getMechanicByFolio(folio);
 
         if ( mechanic == null ) {
-            throw new RuntimeException("mechanic doesn't exist - " + folio);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
 
         return ResponseEntity.ok(mechanic);
     }
 
-    /**
-     * Get all mechanics
-     * @return
-     */
+    @ApiOperation("Get all mechanics")
     @GetMapping("/get/all/mechanics")
     public ResponseEntity<List<Mechanic>> getAllMechanics() {
         List<Mechanic> mechanics = mechanicService.getAllMechanics();

@@ -29,7 +29,7 @@ public class VehicleServiceImpl implements VehicleService {
 
     @Override
     public boolean removeVehicleByPlaque(String plaque) {
-        if ( !plaque.trim().equals("") || plaque != null ) {
+        if ( getVehicleByPlaque(plaque) != null ) {
             vehicleRepository.deleteById(plaque);
             return true;
         }
@@ -47,12 +47,11 @@ public class VehicleServiceImpl implements VehicleService {
 
     @Override
     public Vehicle getVehicleByPlaque(String plaque) {
-        return vehicleRepository.findById(plaque).get();
+        return vehicleRepository.findById(plaque).orElse(null);
     }
 
     @Override
     public List<Vehicle> getAllVehicles() {
-        List<Vehicle> vehicles = (List<Vehicle>) vehicleRepository.findAll();
-        return vehicles;
+        return ((List<Vehicle>) vehicleRepository.findAll());
     }
 }

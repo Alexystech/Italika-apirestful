@@ -29,7 +29,7 @@ public class TypeOfWorkServiceImpl implements TypeOfWorkService {
 
     @Override
     public boolean removeTypeOfWorkByFolio(long folio) {
-        if ( folio > 0 ) {
+        if ( getTypeOfWorkByFolio(folio) != null ) {
             typeOfWorkRepository.deleteById(folio);
             return true;
         }
@@ -47,12 +47,11 @@ public class TypeOfWorkServiceImpl implements TypeOfWorkService {
 
     @Override
     public TypeOfWork getTypeOfWorkByFolio(long folio) {
-        return typeOfWorkRepository.findById(folio).get();
+        return typeOfWorkRepository.findById(folio).orElse(null);
     }
 
     @Override
     public List<TypeOfWork> getAllTypeOfWorks() {
-        List<TypeOfWork> typeOfWorks = (List<TypeOfWork>) typeOfWorkRepository.findAll();
-        return typeOfWorks;
+        return ((List<TypeOfWork>) typeOfWorkRepository.findAll());
     }
 }

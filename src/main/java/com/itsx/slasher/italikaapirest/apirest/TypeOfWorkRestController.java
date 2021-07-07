@@ -2,7 +2,11 @@ package com.itsx.slasher.italikaapirest.apirest;
 
 import com.itsx.slasher.italikaapirest.entity.TypeOfWork;
 import com.itsx.slasher.italikaapirest.service.TypeOfWorkService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,16 +30,16 @@ public class TypeOfWorkRestController {
         this.typeOfWorkService = typeOfWorkService;
     }
 
-    /**
-     * Create a type of work
-     * @param typeOfWork
-     * @return
-     */
+    @ApiOperation("Create a type of work")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 404, message = "No content")
+    })
     @PostMapping("/create/typeofwork")
     public ResponseEntity<TypeOfWork> createTypeOfWork(@RequestBody TypeOfWork typeOfWork) {
 
         if ( typeOfWork == null ) {
-            throw new RuntimeException("type of work is null");
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
 
         typeOfWorkService.createTypeOfWork(typeOfWork);
@@ -43,18 +47,18 @@ public class TypeOfWorkRestController {
         return ResponseEntity.ok(typeOfWork);
     }
 
-    /**
-     * Delete type of work by folio
-     * @param folio
-     * @return
-     */
+    @ApiOperation("Delete type of work by folio")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 404, message = "Type of work not found")
+    })
     @DeleteMapping("/delete/typeofwork/{folio}")
     public ResponseEntity<Boolean> deleteTypeOfWorkByFolio(@PathVariable Long folio) {
 
         TypeOfWork typeOfWork = typeOfWorkService.getTypeOfWorkByFolio(folio);
 
         if ( typeOfWork == null ) {
-            throw new RuntimeException("type of work doesn't exist - " + folio);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
         typeOfWorkService.removeTypeOfWorkByFolio(folio);
@@ -62,16 +66,16 @@ public class TypeOfWorkRestController {
         return ResponseEntity.ok(true);
     }
 
-    /**
-     * Update a type of work
-     * @param typeOfWork
-     * @return
-     */
+    @ApiOperation("Update a type of work")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 404, message = "Type of work not found")
+    })
     @PutMapping("/update/typeofwork")
     public ResponseEntity<TypeOfWork> updateTypeOfWork(@RequestBody TypeOfWork typeOfWork) {
 
         if ( typeOfWork == null ) {
-            throw new RuntimeException("type of work is null");
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
 
         typeOfWorkService.updateTypeOfWork(typeOfWork);
@@ -79,27 +83,24 @@ public class TypeOfWorkRestController {
         return ResponseEntity.ok(typeOfWork);
     }
 
-    /**
-     * Get type of work by folio
-     * @param folio
-     * @return
-     */
+    @ApiOperation("Get type of work by folio")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 404, message = "Type of work not found")
+    })
     @GetMapping("/get/typeofwork/{folio}")
     public ResponseEntity<TypeOfWork> getTypeOfWorkByFolio(@PathVariable Long folio) {
 
         TypeOfWork typeOfWork = typeOfWorkService.getTypeOfWorkByFolio(folio);
 
         if ( typeOfWork == null ) {
-            throw new RuntimeException("type of work doesn't exist - " + folio );
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
         return ResponseEntity.ok(typeOfWork);
     }
 
-    /**
-     * Get all type of work
-     * @return
-     */
+    @ApiOperation("Get all type of work")
     @GetMapping("/get/all/typeofwork")
     public ResponseEntity<List<TypeOfWork>> getAllTypeOfWork() {
         List<TypeOfWork> typeOfWorks = typeOfWorkService.getAllTypeOfWorks();

@@ -29,7 +29,7 @@ public class WorkServiceImpl implements WorkService {
 
     @Override
     public boolean removeWorkByFolio(long folio) {
-        if ( folio > 0 ) {
+        if ( getWorkByFolio(folio) != null ) {
             workRepository.deleteById(folio);
             return true;
         }
@@ -47,12 +47,11 @@ public class WorkServiceImpl implements WorkService {
 
     @Override
     public Work getWorkByFolio(long folio) {
-        return workRepository.findById(folio).get();
+        return workRepository.findById(folio).orElse(null);
     }
 
     @Override
     public List<Work> getAllWorks() {
-        List<Work> works = (List<Work>) workRepository.findAll();
-        return works;
+        return ((List<Work>) workRepository.findAll());
     }
 }
