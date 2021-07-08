@@ -10,7 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * Esta clase se encarga de mapear la tabla {@code work} de la
@@ -64,10 +64,10 @@ public class Work {
     private Double cost;
 
     @Column(name = "fecha_recibido", nullable = false)
-    private Date fechaRecibido;
+    private LocalDateTime fechaRecibido;
 
     @Column(name = "fecha_entrega", nullable = false)
-    private Date fechaEntrega;
+    private LocalDateTime fechaEntrega;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "fk_client", referencedColumnName = "folio", nullable = false)
@@ -78,7 +78,7 @@ public class Work {
 
     public Work(TypeOfWork typeOfWork, Mechanic mechanic,
                 Vehicle vehicle, Double cost,
-                Date fechaRecibido, Date fechaEntrega,
+                LocalDateTime fechaRecibido, LocalDateTime fechaEntrega,
                 Client client, String issues) {
         this.typeOfWork = typeOfWork;
         this.mechanic = mechanic;
@@ -132,19 +132,19 @@ public class Work {
         this.cost = cost;
     }
 
-    public Date getFechaRecibido() {
+    public LocalDateTime getFechaRecibido() {
         return fechaRecibido;
     }
 
-    public void setFechaRecibido(Date fechaRecibido) {
+    public void setFechaRecibido(LocalDateTime fechaRecibido) {
         this.fechaRecibido = fechaRecibido;
     }
 
-    public Date getFechaEntrega() {
+    public LocalDateTime getFechaEntrega() {
         return fechaEntrega;
     }
 
-    public void setFechaEntrega(Date fechaEntrega) {
+    public void setFechaEntrega(LocalDateTime fechaEntrega) {
         this.fechaEntrega = fechaEntrega;
     }
 
